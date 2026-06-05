@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Zeus\Core\Metadata;
 
+use Zeus\Core\Metadata\Enums\FieldType;
+
 /**
  * Class FieldMetadata
  *
@@ -33,6 +35,7 @@ readonly class FieldMetadata
         public int $entity_id,
         public string $table_name,
         public string $column_name,
+        public FieldType $type,
         public string $label,
         public string $data_type,
         public ?int $length,
@@ -40,5 +43,6 @@ readonly class FieldMetadata
         public bool $is_business_key,
         public bool $is_system,
         public int $version,
+        public array $options = [],
     ) {}
 }
