@@ -32,11 +32,11 @@ class ZeusKernel
      * and registries, making them readable from the outside but immutable.
      */
     public function __construct(
-        public private(set) MetadataProviderInterface $metadataProvider,
-        public private(set) EntityRegistry $entityRegistry,
-        public private(set) FieldRegistry $fieldRegistry,
-        public private(set) BusinessKeyRegistry $businessKeyRegistry,
-        public private(set) RelationRegistry $relationRegistry,
+        public readonly MetadataProviderInterface $metadataProvider,
+        public readonly EntityRegistry $entityRegistry,
+        public readonly FieldRegistry $fieldRegistry,
+        public readonly BusinessKeyRegistry $businessKeyRegistry,
+        public readonly RelationRegistry $relationRegistry,
     ) {}
 
     /**
