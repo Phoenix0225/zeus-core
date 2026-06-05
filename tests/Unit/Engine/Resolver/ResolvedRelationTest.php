@@ -21,23 +21,23 @@ class ResolvedRelationTest extends TestCase
      */
     public function test_it_instantiates_correctly(): void
     {
-        $sourceEntity = new EntityMetadata(1, 'uuid-source', 'sales_order', 'Sales Order', null, 'sales', true, 1);
-        $targetEntity = new EntityMetadata(2, 'uuid-target', 'customer', 'Customer', null, 'crm', true, 1);
-        $sourceField = new FieldMetadata(101, 'uuid-field-src', 1, 'sales_orders', 'customer_id', 'Customer ID', 'int', null, false, false, false, 1);
-        $targetField = new FieldMetadata(102, 'uuid-field-trg', 2, 'customers', 'id', 'ID', 'int', null, false, false, false, 1);
+        $sourceEntity = new EntityMetadata(10, 'uuid-src', 'sales_order', 'Sales Order', null, 'sales', true, 1);
+        $targetEntity = new EntityMetadata(20, 'uuid-trg', 'customer', 'Customer', null, 'crm', true, 1);
+        $sourceField = new FieldMetadata(100, 'f-so-cust-code', 10, 'sales_orders', 'customer_code', 'Customer Code', 'string', 50, false, false, false, 1);
+        $targetField = new FieldMetadata(200, 'f-cust-code', 20, 'customers', 'code', 'Code', 'string', 50, false, true, false, 1);
 
         $resolved = new ResolvedRelation(
             sourceEntity: $sourceEntity,
             targetEntity: $targetEntity,
             sourceField: $sourceField,
             targetField: $targetField,
-            relationType: 'many-to-one'
+            relationType: 'N:1'
         );
 
         $this->assertSame($sourceEntity, $resolved->sourceEntity);
         $this->assertSame($targetEntity, $resolved->targetEntity);
         $this->assertSame($sourceField, $resolved->sourceField);
         $this->assertSame($targetField, $resolved->targetField);
-        $this->assertSame('many-to-one', $resolved->relationType);
+        $this->assertSame('N:1', $resolved->relationType);
     }
 }
