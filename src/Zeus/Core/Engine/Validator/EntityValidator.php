@@ -47,10 +47,7 @@ class EntityValidator
         }
 
         // Retrieve all fields associated with the entity ID from the registry
-        $fields = array_filter(
-            $this->fieldRegistry->all(),
-            fn(FieldMetadata $field) => $field->entity_id === $entity->id
-        );
+        $fields = $this->fieldRegistry->getByEntityId($entity->id);
 
         $errors = [];
 
@@ -111,7 +108,7 @@ class EntityValidator
         return match (strtolower($dataType)) {
             'int', 'integer' => is_int($value) || (is_string($value) && filter_var($value, FILTER_VALIDATE_INT) !== false),
             'float', 'double', 'decimal' => is_float($value) || is_int($value) || (is_string($value) && filter_var($value, FILTER_VALIDATE_FLOAT) !== false),
-            'bool', 'boolean' => is_bool($value) || $value === 1 || $value === 0 || $value === '1' || $value === '0' || strcasecmp((string)$value, 'true') === 0 || strcasecmp((string)$value, 'false') === 0,
+            'bool', 'boolean' => is_bool($value) || in_array($value, [1, 0, '1', '0'], true) || (is_string($value) && in_array(strtolower($value), ['true', 'false'], true)),
             'string', 'text' => is_string($value),
             default => true, // Fallback for other logical types
         };

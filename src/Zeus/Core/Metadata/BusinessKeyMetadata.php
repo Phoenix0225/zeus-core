@@ -11,7 +11,7 @@ namespace Zeus\Core\Metadata;
  * Uses PHP 8.4 asymmetric visibility to ensure immutability from the outside
  * once hydrated.
  */
-class BusinessKeyMetadata
+readonly class BusinessKeyMetadata
 {
     /**
      * @param int $id The unique database ID.
@@ -22,11 +22,11 @@ class BusinessKeyMetadata
      * @param int $version The optimistic locking version.
      */
     public function __construct(
-        public private(set) int $id,
-        public private(set) string $uuid,
-        public private(set) int $entity_id,
-        public private(set) string $name,
-        public private(set) bool $is_primary,
-        public private(set) int $version,
+        public int $id,
+        public string $uuid,
+        public int $entity_id,
+        public string $name,
+        public bool $is_primary,
+        public int $version,
     ) {}
 }

@@ -11,7 +11,7 @@ namespace Zeus\Core\Metadata;
  * Uses PHP 8.4 asymmetric visibility to ensure immutability from the outside
  * once hydrated.
  */
-class FieldMetadata
+readonly class FieldMetadata
 {
     /**
      * @param int $id The unique database ID.
@@ -28,17 +28,17 @@ class FieldMetadata
      * @param int $version The optimistic locking version.
      */
     public function __construct(
-        public private(set) int $id,
-        public private(set) string $uuid,
-        public private(set) int $entity_id,
-        public private(set) string $table_name,
-        public private(set) string $column_name,
-        public private(set) string $label,
-        public private(set) string $data_type,
-        public private(set) ?int $length,
-        public private(set) bool $nullable,
-        public private(set) bool $is_business_key,
-        public private(set) bool $is_system,
-        public private(set) int $version,
+        public int $id,
+        public string $uuid,
+        public int $entity_id,
+        public string $table_name,
+        public string $column_name,
+        public string $label,
+        public string $data_type,
+        public ?int $length,
+        public bool $nullable,
+        public bool $is_business_key,
+        public bool $is_system,
+        public int $version,
     ) {}
 }

@@ -144,8 +144,9 @@ class QueryBuilder
 
     private function entityHasField(int $entityId, string $columnName): bool
     {
-        foreach ($this->fieldRegistry->all() as $field) {
-            if ($field->entity_id === $entityId && $field->column_name === $columnName) {
+        $fields = $this->fieldRegistry->getByEntityId($entityId);
+        foreach ($fields as $field) {
+            if ($field->column_name === $columnName) {
                 return true;
             }
         }

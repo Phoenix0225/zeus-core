@@ -20,6 +20,11 @@ class FieldRegistry implements RegistryInterface
     private array $items = [];
 
     /**
+     * @var array<int, array<FieldMetadata>> Indexed by entity_id
+     */
+    private array $byEntityId = [];
+
+    /**
      * Registers a FieldMetadata item in the registry.
      *
      * @param mixed $item The metadata item to register.
@@ -44,6 +49,11 @@ class FieldRegistry implements RegistryInterface
         }
 
         $this->items[$item->uuid] = $item;
+
+        if (!isset($this->byEntityId[$item->entity_id])) {
+            $this->byEntityId[$item->entity_id] = [];
+        }
+        $this->byEntityId[$item->entity_id][] = $item;
     }
 
     /**
@@ -65,5 +75,16 @@ class FieldRegistry implements RegistryInterface
     public function all(): array
     {
         return $this->items;
+    }
+
+    /**
+     * Retrieves all fields for a specific entity.
+     *
+     * @param int $entityId The ID of the entity.
+     * @return array<FieldMetadata>
+     */
+    public function getByEntityId(int $entityId): array
+    {
+        return $this->byEntityId[$entityId] ?? [];
     }
 }
