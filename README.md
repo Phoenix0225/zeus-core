@@ -7,3 +7,7 @@
 Zeus Core is a **framework-agnostic, metadata-driven engine** designed to power highly customizable ERP and business systems without hardcoding business logic.
 
 It is the foundation of the Zeus ecosystem.
+
+
+## Timeline
+2026-01-28 : The engine is alive.

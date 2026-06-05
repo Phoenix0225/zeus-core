@@ -1,0 +1,29 @@
+{
+  "name": "zeus-erp/zeus-core",
+  "description": "Core engine of the Zeus ERP ecosystem.",
+  "type": "library",
+  "license": "BUSL-1.1",
+  "authors": [
+    {
+      "name": "Francis Blanchette",
+      "role": "Founder & Architect"
+    }
+  ],
+  "require": {
+    "php": "^8.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Zeus\\Core\\": "src/Zeus/Core/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Zeus\\Core\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "minimum-stability": "stable"
+}
