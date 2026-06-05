@@ -11,6 +11,7 @@ readonly class TenantContext
         public string|int|null $divisionId = null,
         public string|int|null $siteId = null,
         public string|int|null $warehouseId = null,
+        public array $permissions = [],
     ) {}
 
     public function isGlobal(): bool
@@ -37,5 +38,10 @@ readonly class TenantContext
         }
 
         return 'global';
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        return in_array('*', $this->permissions, true) || in_array($permission, $this->permissions, true);
     }
 }
