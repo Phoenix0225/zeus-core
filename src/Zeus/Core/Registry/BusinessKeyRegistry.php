@@ -36,6 +36,13 @@ class BusinessKeyRegistry implements RegistryInterface
             ));
         }
 
+        if (isset($this->items[$item->uuid])) {
+            throw new InvalidArgumentException(sprintf(
+                'Business key with UUID "%s" is already registered.',
+                $item->uuid
+            ));
+        }
+
         $this->items[$item->uuid] = $item;
     }
 

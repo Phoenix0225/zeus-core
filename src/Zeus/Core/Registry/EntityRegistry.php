@@ -36,6 +36,13 @@ class EntityRegistry implements RegistryInterface
             ));
         }
 
+        if (isset($this->items[$item->code])) {
+            throw new InvalidArgumentException(sprintf(
+                'Entity with code "%s" is already registered.',
+                $item->code
+            ));
+        }
+
         $this->items[$item->code] = $item;
     }
 

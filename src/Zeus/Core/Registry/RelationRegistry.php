@@ -36,6 +36,13 @@ class RelationRegistry implements RegistryInterface
             ));
         }
 
+        if (isset($this->items[$item->uuid])) {
+            throw new InvalidArgumentException(sprintf(
+                'Relation with UUID "%s" is already registered.',
+                $item->uuid
+            ));
+        }
+
         $this->items[$item->uuid] = $item;
     }
 
