@@ -11,6 +11,7 @@ use Zeus\Core\Contracts\MetadataProviderInterface;
 use Zeus\Core\Contracts\TenantContextResolverInterface;
 use Zeus\Core\Exceptions\UnknownFieldException;
 use Zeus\Core\Metadata\EntityMetadata;
+use Zeus\Core\Security\SecurityEnforcer;
 
 class EntityManager
 {
@@ -19,10 +20,14 @@ class EntityManager
         private readonly TenantEnforcer $tenantEnforcer,
         private readonly TenantContextResolverInterface $contextResolver,
         private readonly EntityStorageInterface $storage,
+        private readonly SecurityEnforcer $securityEnforcer,
     ) {}
 
     public function create(EntityMetadata $entity, array $payload): string|int
     {
+        $context = $this->contextResolver->resolve();
+        $this->securityEnforcer->authorize($context, $entity->code, 'create');
+
         $fields = $this->metadataProvider->getFields($entity->code);
         $validColumns = [];
         
@@ -36,7 +41,6 @@ class EntityManager
             }
         }
 
-        $context = $this->contextResolver->resolve();
         $enrichedPayload = $this->tenantEnforcer->enrichPayload($context, $payload);
 
         return $this->storage->insert($entity, $enrichedPayload);
@@ -44,6 +48,9 @@ class EntityManager
 
     public function update(EntityMetadata $entity, string|int $id, array $payload): bool
     {
+        $context = $this->contextResolver->resolve();
+        $this->securityEnforcer->authorize($context, $entity->code, 'update');
+
         $fields = $this->metadataProvider->getFields($entity->code);
         $validColumns = [];
         
@@ -57,7 +64,6 @@ class EntityManager
             }
         }
 
-        $context = $this->contextResolver->resolve();
         $criteria = $this->tenantEnforcer->getReadCriteria($context);
 
         return $this->storage->update($entity, $id, $payload, $criteria);
@@ -66,6 +72,8 @@ class EntityManager
     public function delete(EntityMetadata $entity, string|int $id): bool
     {
         $context = $this->contextResolver->resolve();
+        $this->securityEnforcer->authorize($context, $entity->code, 'delete');
+
         $criteria = $this->tenantEnforcer->getReadCriteria($context);
 
         return $this->storage->delete($entity, $id, $criteria);

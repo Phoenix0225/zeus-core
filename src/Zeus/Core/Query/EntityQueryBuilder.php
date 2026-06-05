@@ -8,6 +8,7 @@ use RuntimeException;
 use Zeus\Core\Context\TenantEnforcer;
 use Zeus\Core\Contracts\TenantContextResolverInterface;
 use Zeus\Core\Metadata\EntityMetadata;
+use Zeus\Core\Security\SecurityEnforcer;
 
 class EntityQueryBuilder
 {
@@ -16,6 +17,7 @@ class EntityQueryBuilder
     public function __construct(
         private readonly TenantEnforcer $tenantEnforcer,
         private readonly TenantContextResolverInterface $contextResolver,
+        private readonly SecurityEnforcer $securityEnforcer,
     ) {}
 
     public function forEntity(EntityMetadata $entity): self
@@ -23,6 +25,7 @@ class EntityQueryBuilder
         $this->query = new EntityQuery($entity);
 
         $context = $this->contextResolver->resolve();
+        $this->securityEnforcer->authorize($context, $entity->code, 'read');
         $criteria = $this->tenantEnforcer->getReadCriteria($context);
 
         foreach ($criteria as $criterion) {
@@ -44,6 +47,17 @@ class EntityQueryBuilder
         }
 
         $this->query->addCondition(new Condition($field, $operator, $value));
+
+        return $this;
+    }
+
+    public function whereIn(string $field, array $values): self
+    {
+        if ($this->query === null) {
+            throw new RuntimeException("Vous devez appeler forEntity() avant d'ajouter des conditions.");
+        }
+
+        $this->query->addCondition(new Condition($field, 'IN', $values));
 
         return $this;
     }
